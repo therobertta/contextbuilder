@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}{{ username }}/{{ repo }} - Mind Reading in Progress{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="text-center mb-4">
+            <h1 class="display-5">
+                <i class="fab fa-github"></i> {{ username }}/{{ repo }}
+            </h1>
+            <p class="lead">Scanning developer's mind...</p>
+        </div>
+
+        <!-- Scanning Animation -->
+        <div class="scanning-container mb-5">
+            <div class="card shadow">
+                <div class="card-body text-center">
+                    <div class="scanning-animation mb-3">
+                        <i class="fas fa-brain scanning-icon"></i>
+                    </div>
+                    <h4 class="scanning-text">🧠 SCANNING {{ username|upper }}'S MIND...</h4>
+                    <div class="progress mt-3">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" 
+                             id="scanProgress" 
+                             role="progressbar" 
+                             style="width: 0%">
+                        </div>
+                    </div>
+                    <p class="mt-2 text-muted" id="scanStatus">Initializing analysis...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Container (Hidden initially) -->
+        <div id="resultsContainer" class="results-container" style="display: none;">
+            
+            <!-- Core Beliefs Section -->
+            <div class="card shadow mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h3><i class="fas fa-lightbulb"></i> CORE BELIEFS DETECTED</h3>
+                </div>
+                <div class="card-body">
+                    <div id="beliefsContainer">
+                        <!-- Beliefs will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Epistemic Profile -->
+            <div class="card shadow mb-4">
+                <div class="card-header bg-success text-white">
+                    <h3><i class="fas fa-user-circle"></i> EPISTEMIC PROFILE</h3>
+                </div>
+                <div class="card-body">
+                    <div id="profileContainer">
+                        <!-- Profile will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Predictions -->
+            <div class="card shadow mb-4">
+                <div class="card-header bg-warning text-dark">
+                    <h3><i class="fas fa-crystal-ball"></i> BELIEF PREDICTIONS</h3>
+                </div>
+                <div class="card-body">
+                    <div id="predictionsContainer">
+                        <!-- Predictions will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Epistemic Eval Score -->
+            <div class="card shadow mb-4">
+                <div class="card-header bg-info text-white">
+                    <h3><i class="fas fa-chart-line"></i> EPISTEMIC EVAL SCORE</h3>
+                </div>
+                <div class="card-body text-center">
+                    <div id="scoreContainer">
+                        <!-- Score will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Share Section -->
+            <div class="text-center">
+                <h4>🤯 Mind = Blown?</h4>
+                <p>Share this analysis with your network!</p>
+                <div class="btn-group">
+                    <a href="#" class="btn btn-primary" onclick="shareToTwitter()">
+                        <i class="fab fa-twitter"></i> Share on Twitter
+                    </a>
+                    <a href="#" class="btn btn-success" onclick="copyLink()">
+                        <i class="fas fa-link"></i> Copy Link
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Pass data to JavaScript
+window.repoData = {
+    username: '{{ username }}',
+    repo: '{{ repo }}',
+    timestamp: '{{ timestamp }}'
+};
+</script>
+{% endblock %}

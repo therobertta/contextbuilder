@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Error - ContextBuilder{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="text-center">
+            <div class="error-icon mb-4">
+                <i class="fas fa-exclamation-triangle fa-5x text-danger"></i>
+            </div>
+            
+            <h1 class="display-4 mb-3">{{ error }}</h1>
+            <p class="lead">{{ message }}</p>
+            
+            <div class="mt-4">
+                <a href="/" class="btn btn-primary">
+                    <i class="fas fa-home"></i> Back to Home
+                </a>
+            </div>
+            
+            <div class="mt-5">
+                <h5>Try these popular repositories:</h5>
+                <div class="list-group">
+                    <a href="/karpathy/nanogpt" class="list-group-item list-group-item-action">
+                        <i class="fab fa-github"></i> karpathy/nanogpt
+                    </a>
+                    <a href="/microsoft/vscode" class="list-group-item list-group-item-action">
+                        <i class="fab fa-github"></i> microsoft/vscode
+                    </a>
+                    <a href="/facebook/react" class="list-group-item list-group-item-action">
+                        <i class="fab fa-github"></i> facebook/react
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,188 @@
+/* ContextBuilder Styles */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+}
+
+.card-header {
+    border-radius: 15px 15px 0 0 !important;
+    font-weight: 600;
+}
+
+/* Scanning Animation */
+.scanning-container {
+    position: relative;
+}
+
+.scanning-icon {
+    font-size: 3rem;
+    color: #667eea;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.7; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.scanning-text {
+    font-weight: 700;
+    color: #333;
+    margin: 20px 0;
+}
+
+/* Progress Bar */
+.progress {
+    height: 25px;
+    border-radius: 15px;
+    background: #e9ecef;
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 15px;
+    font-weight: 600;
+}
+
+/* Results Animation */
+.results-container {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Belief Items */
+.belief-item {
+    border-left: 4px solid #667eea;
+    padding: 15px;
+    margin: 15px 0;
+    background: #f8f9fa;
+    border-radius: 0 10px 10px 0;
+    animation: typewriter 0.8s ease-out;
+}
+
+@keyframes typewriter {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+.confidence-bar {
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.confidence-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #28a745, #20c997);
+    border-radius: 4px;
+    transition: width 1s ease-out;
+}
+
+/* Profile Items */
+.profile-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.profile-item:last-child {
+    border-bottom: none;
+}
+
+.profile-icon {
+    font-size: 1.5rem;
+    margin-right: 15px;
+    width: 30px;
+    text-align: center;
+}
+
+/* Score Display */
+.score-display {
+    font-size: 4rem;
+    font-weight: 700;
+    color: #667eea;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.score-label {
+    font-size: 1.2rem;
+    color: #6c757d;
+    margin-top: 10px;
+}
+
+/* Feature Icons */
+.feature-icon i {
+    transition: transform 0.3s ease;
+}
+
+.feature-icon:hover i {
+    transform: scale(1.1);
+}
+
+/* Error Page */
+.error-icon {
+    opacity: 0.8;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .scanning-icon {
+        font-size: 2rem;
+    }
+    
+    .score-display {
+        font-size: 3rem;
+    }
+}
+
+/* Footer */
+footer {
+    margin-top: auto;
+}
+
+/* Button Styles */
+.btn {
+    border-radius: 25px;
+    padding: 10px 25px;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(45deg, #5a67d8, #6b46c1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
