@@ -56,7 +56,34 @@ function showResults() {
         scanningContainer.style.display = 'none';
         resultsContainer.style.display = 'block';
         
-        // Populate results with mock data
+        // Fetch real analysis data
+        fetchAnalysisData();
+    }
+}
+
+async function fetchAnalysisData() {
+    try {
+        const { username, repo } = window.repoData;
+        const response = await fetch(`/api/analyze/${username}/${repo}`);
+        
+        if (!response.ok) {
+            throw new Error('Analysis failed');
+        }
+        
+        const data = await response.json();
+        
+        // Populate results with real data
+        populateBeliefs(data.beliefs);
+        populateProfile(data.archetype, data.repository, data.user);
+        populatePredictions(data.predictions);
+        populateScore(data.epistemic_score);
+        
+        // Store data for sharing
+        window.analysisData = data;
+        
+    } catch (error) {
+        console.error('Error fetching analysis:', error);
+        // Fall back to mock data
         populateBeliefs();
         populateProfile();
         populatePredictions();
@@ -64,26 +91,27 @@ function showResults() {
     }
 }
 
-function populateBeliefs() {
+function populateBeliefs(beliefsData = null) {
     const container = document.getElementById('beliefsContainer');
     if (!container) return;
     
-    const beliefs = [
+    // Use real data if available, otherwise fallback to mock data
+    const beliefs = beliefsData || [
         {
-            text: "Education through code is more powerful than papers",
-            confidence: 94
+            content: "Education through code is more powerful than papers",
+            confidence: 0.94
         },
         {
-            text: "Simplicity beats complexity in ML implementations",
-            confidence: 91
+            content: "Simplicity beats complexity in ML implementations",
+            confidence: 0.91
         },
         {
-            text: "Teaching by building from scratch creates deeper understanding",
-            confidence: 89
+            content: "Teaching by building from scratch creates deeper understanding",
+            confidence: 0.89
         },
         {
-            text: "Open source accelerates collective learning",
-            confidence: 87
+            content: "Open source accelerates collective learning",
+            confidence: 0.87
         }
     ];
     
@@ -91,16 +119,22 @@ function populateBeliefs() {
         setTimeout(() => {
             const beliefElement = document.createElement('div');
             beliefElement.className = 'belief-item';
+            
+            const confidence = Math.round((belief.confidence || 0.8) * 100);
+            const content = belief.content || belief.text;
+            const evidence = belief.evidence ? belief.evidence.join(', ') : '';
+            
             beliefElement.innerHTML = `
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="flex-grow-1">
-                        <h6 class="mb-1">"${belief.text}"</h6>
+                        <h6 class="mb-1">"${content}"</h6>
+                        ${evidence ? `<small class="text-muted">Evidence: ${evidence}</small>` : ''}
                         <div class="confidence-bar">
-                            <div class="confidence-fill" style="width: ${belief.confidence}%"></div>
+                            <div class="confidence-fill" style="width: ${confidence}%"></div>
                         </div>
                     </div>
                     <div class="ms-3">
-                        <span class="badge bg-success">${belief.confidence}%</span>
+                        <span class="badge bg-success">${confidence}%</span>
                     </div>
                 </div>
             `;
@@ -109,30 +143,35 @@ function populateBeliefs() {
     });
 }
 
-function populateProfile() {
+function populateProfile(archetypeData = null, repositoryData = null, userData = null) {
     const container = document.getElementById('profileContainer');
     if (!container) return;
     
+    // Build profile from real data if available
+    const archetype = archetypeData || { type: 'pragmatist', description: 'Balanced approach to software development' };
+    const repo = repositoryData || {};
+    const user = userData || {};
+    
     const profile = [
         {
-            icon: "fas fa-graduation-cap",
-            label: "Learning Style",
-            value: "\"Show, don't tell\" educator"
+            icon: "fas fa-user-circle",
+            label: "Developer Archetype",
+            value: `"The ${archetype.type.charAt(0).toUpperCase() + archetype.type.slice(1)}" - ${archetype.description || ''}`
         },
         {
-            icon: "fas fa-chart-line",
-            label: "Risk Profile",
-            value: "High technical risk, low conceptual risk"
+            icon: "fas fa-code",
+            label: "Primary Language",
+            value: repo.language || "Multi-language developer"
         },
         {
-            icon: "fas fa-bullseye",
-            label: "Alignment",
-            value: "Democratizing AI knowledge"
+            icon: "fas fa-star",
+            label: "Community Impact",
+            value: `${repo.stars || 0} stars, ${repo.forks || 0} forks`
         },
         {
-            icon: "fas fa-heart",
-            label: "Core Values",
-            value: "Transparency, Education, Simplicity"
+            icon: "fas fa-calendar",
+            label: "Experience Level",
+            value: user.created_at ? `GitHub since ${new Date(user.created_at).getFullYear()}` : "Experienced developer"
         }
     ];
     
@@ -153,11 +192,12 @@ function populateProfile() {
     });
 }
 
-function populatePredictions() {
+function populatePredictions(predictionsData = null) {
     const container = document.getElementById('predictionsContainer');
     if (!container) return;
     
-    const predictions = [
+    // Use real data if available
+    const predictions = predictionsData ? predictionsData.likely_actions : [
         {
             text: "Will build educational tool for transformers",
             probability: 78
@@ -172,7 +212,7 @@ function populatePredictions() {
         }
     ];
     
-    const rejections = [
+    const rejections = predictionsData ? predictionsData.unlikely_actions : [
         "Over-engineered frameworks",
         "Blackbox AI solutions",
         "Non-reproducible research"
@@ -209,22 +249,43 @@ function populatePredictions() {
     }, 500);
 }
 
-function populateScore() {
+function populateScore(scoreData = null) {
     const container = document.getElementById('scoreContainer');
     if (!container) return;
     
+    // Use real data if available
+    const score = scoreData || {
+        overall_score: 8.7,
+        recommendation: 'Your beliefs are highly consistent but consider exploring adversarial viewpoints to strengthen reasoning.'
+    };
+    
     setTimeout(() => {
         container.innerHTML = `
-            <div class="score-display">8.7<span style="font-size: 2rem;">/10</span></div>
+            <div class="score-display">${score.overall_score}<span style="font-size: 2rem;">/10</span></div>
             <div class="score-label">Epistemic Consistency Score</div>
             <p class="mt-3 text-muted">
                 How well your beliefs align with your actions
             </p>
+            ${score.consistency_score ? `
+                <div class="row mt-3">
+                    <div class="col-md-4">
+                        <small>Consistency</small><br>
+                        <strong>${score.consistency_score}/10</strong>
+                    </div>
+                    <div class="col-md-4">
+                        <small>Growth</small><br>
+                        <strong>${score.growth_score}/10</strong>
+                    </div>
+                    <div class="col-md-4">
+                        <small>Impact</small><br>
+                        <strong>${score.impact_score}/10</strong>
+                    </div>
+                </div>
+            ` : ''}
             <div class="mt-4">
                 <div class="alert alert-info">
                     <i class="fas fa-lightbulb"></i>
-                    <strong>Insight:</strong> Your beliefs are highly consistent but consider 
-                    exploring adversarial viewpoints to strengthen reasoning.
+                    <strong>Insight:</strong> ${score.recommendation}
                 </div>
             </div>
         `;
